@@ -1,7 +1,7 @@
 module.exports=(sequelize, DataTypes) =>{
     const Service= sequelize.define('service', {
         date:{
-            type:DataTypes.DATE,
+            type:DataTypes.STRING,
             allowNull: false,
             validate:{notEmpty:true}
         },
@@ -23,8 +23,10 @@ module.exports=(sequelize, DataTypes) =>{
         status:{
             type:DataTypes.STRING,
             allowNull:true
+        },
+        owner: {
+            type:DataTypes.INTEGER
         }
-
 
         
     })
