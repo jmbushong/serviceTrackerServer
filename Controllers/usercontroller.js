@@ -9,7 +9,8 @@ router.post('/signup', (req,res) =>{
         firstName: req.body.studentUser.firstName,
         lastName:req.body.studentUser.lastName,
         email:req.body.studentUser.email,
-        password:bcrypt.hashSync(req.body.studentUser.password, 12)
+        password:bcrypt.hashSync(req.body.studentUser.password, 12),
+        classId: req.body.studentUser.classId
     })
     .then(studentUser =>{
         const token= jwt.sign({id:studentUser.id}, process.env.JWT_SECRET, {expiresIn:"7d"})
@@ -53,11 +54,12 @@ router.post('/login', (req, res) =>{
     //GET '/' --- Gets all users (eventually add validateSession when connected to teacher)
 router.get("/all",  function (req, res) {
 
-    return User.findAll()
+    return User.findAll({include: [{model: teacherUser, as: 'class'}]})
       .then((userinfo) => res.status(200).json(userinfo))
       .catch((err) => res.status(500).json({ error: err }));
   });
 
+  //get all users with teacher information
 
   //Update User Info By ID --- I want a user & teacher to be able to do this
 router.put("/:id", validateSession, function (req, res) {

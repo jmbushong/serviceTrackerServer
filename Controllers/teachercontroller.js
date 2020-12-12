@@ -1,19 +1,22 @@
 
 const router= require('express').Router();
-const validateSession = require("../middleware/validate-session");
+const validateSession=require('../Middleware/validate-session-teacher')
 const Teacher= require('../Db').import('../Models/teacherUser');
 const jwt= require('jsonwebtoken')
-const bcrypt= require('bcryptjs')
+const bcrypt= require('bcryptjs');
+const studentUser = require('../Models/studentUser');
 
 router.post('/signup', (req,res) =>{
+    //make random number
     Teacher.create({
         firstName: req.body.teacherUser.firstName,
         lastName:req.body.teacherUser.lastName,
         email:req.body.teacherUser.email,
-        password:bcrypt.hashSync(req.body.teacherUser.password, 12)
+        password:bcrypt.hashSync(req.body.teacherUser.password, 12),
+        classId: req.body.teacherUser.classId
     })
     .then(teacherUser =>{
-        const token= jwt.sign({id:teacherUser.id}, process.env.JWT_SECRET, {expiresIn:"7d"})
+        const token= jwt.sign({classId:teacherUser.classId}, process.env.JWT_SECRET, {expiresIn:"7d"})
         res.json({
             teacherUser:teacherUser,
             message:"user was created successfully",
@@ -24,7 +27,7 @@ router.post('/signup', (req,res) =>{
 
 
 //login
-router.post('/login', (req, res) =>{
+router.post('/login', validateSession, (req, res) =>{
 
     Teacher.findOne({
         where:{email: req.body.teacherUser.email}
@@ -34,7 +37,7 @@ router.post('/login', (req, res) =>{
             
                 bcrypt.compare(req.body.teacherUser.password, user.password, (err, matches) =>{
                     if(matches){
-                        const token=jwt.sign({id:user.id},process.env.JWT_SECRET, {expiresIn:"7d"})
+                        const token=jwt.sign({classId:user.classId},process.env.JWT_SECRET, {expiresIn:"7d"})
                         res.status(200).json({
                             user:user,
                             message: "successfully authenticated",
@@ -53,8 +56,8 @@ router.post('/login', (req, res) =>{
 })
 
     //GET '/' --- Gets all users (eventually add validateSession when connected to teacher)
-router.get("/all",  function (req, res) {
-
+router.get("/all", validateSession,  function (req, res) {
+    console.log(req.originalUrl)
     return Teacher.findAll()
       .then((userinfo) => res.status(200).json(userinfo))
       .catch((err) => res.status(500).json({ error: err }));

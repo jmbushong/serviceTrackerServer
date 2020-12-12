@@ -21,17 +21,12 @@ module.exports=(sequelize, DataTypes) =>{
             allowNull:false,
             validate:{notEmpty:true},
             //Password expression. Password must be between 4 and 8 digits long and include at least one numeric digit.
+        },
+        classId:{
+            type:DataTypes.INTEGER,
+            primaryKey: true
+        }
 
-        },
-        typeOfUser:{
-            type:DataTypes.STRING,
-            allowNull:true
-        },
-    
-       code:{
-           type:DataTypes.INTEGER,
-           allowNull:true
-       }
 
 
         
