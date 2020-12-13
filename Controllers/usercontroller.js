@@ -1,6 +1,7 @@
 const router= require('express').Router();
 const User= require('../Db').import('../Models/studentUser');
 const teacherUser= require('../Db').import('../Models/teacherUser')
+const Service= require('../Db').import('../Models/service')
 const jwt= require('jsonwebtoken')
 const bcrypt= require('bcryptjs')
 const validateSession=require('../Middleware/validate-session')
@@ -55,7 +56,7 @@ router.post('/login', (req, res) =>{
     //GET '/' --- Gets all users (eventually add validateSession when connected to teacher)
 router.get("/all",  function (req, res) {
 
-    return User.findAll({include: [{model: teacherUser}]})
+    return User.findAll({include: [{model: teacherUser}, {model: Service}]})
       .then((userinfo) => res.status(200).json(userinfo))
       .catch((err) => res.status(500).json({ error: err }));
   });

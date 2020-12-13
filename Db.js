@@ -1,7 +1,5 @@
 const Sequelize= require('sequelize');
 
-
-
 const database= new Sequelize(process.env.NAME, 'postgres', process.env.PASS,{host:
 'localhost',
 dialect: 'postgres'
@@ -16,10 +14,8 @@ Teacher.hasMany(Student, {foreignKey: "classId"})
 Student.belongsTo(Teacher, {foreignKey: "classId"})
 
 //One to Many
-Student.hasMany(ServiceEntry,{ as: 'serviceEntry'})
+Student.hasMany(ServiceEntry)
 ServiceEntry.belongsTo(Student)
-
-
 
 
 
