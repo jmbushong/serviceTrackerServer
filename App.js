@@ -9,6 +9,8 @@ const database=require('./Db');
 database.sync();
 app.use(Express.json());
 
+app.use(require('./middleware/headers'))
+
 const user= require('./Controllers/usercontroller');
 app.use('/user', user)
 
