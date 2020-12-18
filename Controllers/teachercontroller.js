@@ -7,13 +7,14 @@ const bcrypt= require('bcryptjs');
 const User= require('../Db').import('../Models/studentUser');
 
 router.post('/signup', (req,res) =>{
-    //make random number
+   let randomNumber= Math.floor(1000+Math.random() * 9000)
     Teacher.create({
         firstName: req.body.teacherUser.firstName,
         lastName:req.body.teacherUser.lastName,
         email:req.body.teacherUser.email,
         password:bcrypt.hashSync(req.body.teacherUser.password, 12),
-        classId: req.body.teacherUser.classId
+        classId: randomNumber,
+        
     })
     .then(teacherUser =>{
         const token= jwt.sign({classId:teacherUser.classId}, process.env.JWT_SECRET, {expiresIn:"7d"})

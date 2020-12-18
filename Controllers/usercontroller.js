@@ -12,7 +12,8 @@ router.post('/signup', (req,res) =>{
         lastName:req.body.studentUser.lastName,
         email:req.body.studentUser.email,
         password:bcrypt.hashSync(req.body.studentUser.password, 12),
-        classId: req.body.studentUser.classId
+        classId: req.body.studentUser.classId,
+        
     })
     .then(studentUser =>{
         const token= jwt.sign({id:studentUser.id}, process.env.JWT_SECRET, {expiresIn:"7d"})
