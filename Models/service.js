@@ -1,7 +1,7 @@
 module.exports=(sequelize, DataTypes) =>{
     const Service= sequelize.define('service', {
         date:{
-            type:DataTypes.STRING,
+            type:DataTypes.DATE,
             allowNull: false,
             validate:{notEmpty:true}
         },
