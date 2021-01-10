@@ -57,9 +57,11 @@ router.post('/login',  (req, res) =>{
 })
 
     //GET '/' --- Gets all users (eventually add validateSession when connected to teacher)
-router.get("/all",   function (req, res) {
+router.get("/all", validateSession,   function (req, res) {
     console.log(req.originalUrl)
-    return Teacher.findAll( {include: [{model: User}]})
+    return Teacher.findAll( 
+        
+        {include: [{model: User}]})
       .then((userinfo) => res.status(200).json(userinfo))
       .catch((err) => res.status(500).json({ error: err }));
   });
@@ -68,7 +70,9 @@ router.get("/all",   function (req, res) {
 router.get("/:id", validateSession, function (req, res) {
    
     return  Teacher.findOne(
-       { where: { classId: req.params.id} , include: [{model:User}]
+       { 
+        where: { classId: req.params.id },
+        include:[{model: User}]
     
     }
      )
