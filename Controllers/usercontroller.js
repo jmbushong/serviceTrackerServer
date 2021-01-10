@@ -81,8 +81,8 @@ router.put("/:id", validateSession, function (req, res) {
   });
 
 
-router.delete("/:id", validateSession, function (req, res) {
-    const query = { where: { id: req.params.id, id: req.user.id  } };
+router.delete("/delete", validateSession, function (req, res) {
+    const query = { where: {id: req.user.id} };
     User.destroy(query)
       .then(() => res.status(200).json({ message: "user is removed" }))
       .catch((err) => res.status(500).json({ error: err }));

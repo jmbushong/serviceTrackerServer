@@ -24,11 +24,14 @@ router.post("/", validateSession, (req, res) => {
 router.get("/", validateSession,function (req, res) {
     Service.findAll({
       where: { studentUserId: req.user.id },
-      include:[{model: User}]
+      include:[{model: User}],
+      order: [["date", "ASC"]]
     })
       .then((profile) => res.status(200).json(profile))
       .catch((err) => res.status(500).json({ error: err }));
   });
+
+
 
 
     //GET '/' --- Pulls up all service entries (eventually i need to add validateSession back in because this is a security issue. People could view info from postman)
@@ -52,6 +55,17 @@ router.get("/all",  function (req, res) {
 //       .catch((err) => res.status(500).json({ error: err }));
 //   });
 
+  //GET '/id' --- Pulls up  service entries by id for individual user (can we make it so the user only creates one?)
+  router.get("/:id", validateSession,function (req, res) {
+    Service.findOne({
+      where: { id: req.params.id, studentUserId: req.user.id },
+      include:[{model: User}],
+      order: [["date", "ASC"]]
+    })
+      .then((profile) => res.status(200).json(profile))
+      .catch((err) => res.status(500).json({ error: err }));
+  });
+
 router.put("/:id", validateSession, function (req, res) {
     const updateServiceEntries = {
         date: req.body.service.date,
@@ -63,7 +77,9 @@ router.put("/:id", validateSession, function (req, res) {
     };
     const query = { where: { id: req.params.id, studentUserId: req.user.id } };
   
-   Service.update(updateServiceEntries, query)
+    //req.body.service -- instead of saying I have to have all of the above-- I just want anything that happens to be in that object will be sent
+    // req.body.service
+   Service.update(req.body.service, query)
       .then((entry) => res.status(200).json(entry))
       .catch((err) => res.status(500).json({ error: err }));
   });
