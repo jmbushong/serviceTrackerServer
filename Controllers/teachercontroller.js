@@ -67,11 +67,11 @@ router.get("/all", validateSession,   function (req, res) {
   });
 
       //GET ---find all students associated with specific teacher
-router.get("/:id", validateSession, function (req, res) {
-   
+router.get("/", validateSession, function (req, res) {
+   console.log(req.user.id)
     return  Teacher.findOne(
        { 
-        where: { classId: req.params.id },
+        where: { classId: req.user.classId },
         include:[{model: User}]
     
     }

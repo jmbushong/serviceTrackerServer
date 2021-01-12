@@ -17,12 +17,13 @@ app.use('/user', user)
 const teacherUser= require('./Controllers/teachercontroller')
 app.use('/teacheruser', teacherUser);
 
+const events= require('./Controllers/eventscontroller')
+app.use('/events', events);
 
 const service= require('./Controllers/servicecontroller')
 app.use('/service', service);
 
-// const events= require('./Controllers/eventscontroller')
-// app.use('/events', events);
+
 
 
 

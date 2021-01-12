@@ -1,15 +1,11 @@
 module.exports=(sequelize, DataTypes) =>{
     const Events= sequelize.define('events', {
         date:{
-            type:DataTypes.DATE,
+            type:DataTypes.STRING,
             allowNull: false,
             validate:{notEmpty:true}
         },
-        typeOfService:{
-            type:DataTypes.STRING,
-            allowNull:false,
-            validate:{notEmpty:true}
-        },
+    
         description:{
             type:DataTypes.STRING,
             allowNull:false
@@ -18,10 +14,11 @@ module.exports=(sequelize, DataTypes) =>{
             type:DataTypes.STRING,
             allowNull:true
         },    
-        time:{
+        title:{
             type:DataTypes.STRING,
-            allowNull:true
-        },
+            allowNull:false
+        },  
+      
 
         hours:{
             type:DataTypes.INTEGER,
