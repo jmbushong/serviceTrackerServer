@@ -6,6 +6,7 @@ const jwt= require('jsonwebtoken')
 const bcrypt= require('bcryptjs');
 const User= require('../Db').import('../Models/studentUser');
 
+
 router.post('/signup', (req,res) =>{
    let randomNumber= Math.floor(1000+Math.random() * 9000)
     Teacher.create({
@@ -97,14 +98,21 @@ router.put("/:id",  function (req, res) {
   });
 
 
-router.delete("/:id", function (req, res) {
-    const query = { where: {  classId: req.params.id } };
+router.delete("/deleteadmin", validateSession, function (req, res) {
+    const query = { where: {  classId: req.user.classId }, include:[{model: User}] };
     Teacher.destroy(query)
+      .then(() => res.status(200).json({ message: "user is removed" }))
+      .catch((err) => res.status(500).json({ error: err }));
+      
+  });
+  
+  router.delete("/deleteclass", function (req, res) {
+    const query = { where: {  classId: null} };
+    User.destroy(query)
       .then(() => res.status(200).json({ message: "user is removed" }))
       .catch((err) => res.status(500).json({ error: err }));
   });
   
-
 
 
 
