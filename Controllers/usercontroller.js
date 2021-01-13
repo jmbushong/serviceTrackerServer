@@ -5,6 +5,7 @@ const Service= require('../Db').import('../Models/service')
 const jwt= require('jsonwebtoken')
 const bcrypt= require('bcryptjs')
 const validateSession=require('../Middleware/validate-session')
+const validateSessionTeacher=require('../Middleware/validate-session-teacher')
 
 router.post('/signup', (req,res) =>{
     User.create({
@@ -88,6 +89,19 @@ router.delete("/delete", validateSession, function (req, res) {
       .catch((err) => res.status(500).json({ error: err }));
   });
   
+//   router.delete("/:id", validateSessionTeacher, function (req, res) {
+//     const query = { where: {id: req.params.id} };
+//     User.destroy(query)
+//       .then(() => res.status(200).json({ message: "student user is removed" }))
+//       .catch((err) => res.status(500).json({ error: err }));
+//   });
+  
+  router.delete("/:id", validateSessionTeacher, function (req, res) {
+    const query = { where: {id: req.params.id},  include:[{model: User}] };
+    User.destroy(query)
+      .then(() => res.status(200).json({ message: "student user is removed" }))
+      .catch((err) => res.status(500).json({ error: err }));
+  });
 
 
 
