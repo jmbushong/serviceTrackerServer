@@ -5,6 +5,7 @@ const Teacher= require('../Db').import('../Models/teacherUser');
 const jwt= require('jsonwebtoken')
 const bcrypt= require('bcryptjs');
 const User= require('../Db').import('../Models/studentUser');
+const Service = require("../Db").import("../Models/service");
 
 
 router.post('/signup', (req,res) =>{
@@ -110,6 +111,13 @@ router.delete("/deleteadmin", validateSession, function (req, res) {
     const query = { where: {  classId: null} };
     User.destroy(query)
       .then(() => res.status(200).json({ message: "user is removed" }))
+      .catch((err) => res.status(500).json({ error: err }));
+  });
+  
+  router.delete("/deleteclassentries", function (req, res) {
+    const query = { where: {  studentUserId: null} };
+    Service.destroy(query)
+      .then(() => res.status(200).json({ message: "class service is removed" }))
       .catch((err) => res.status(500).json({ error: err }));
   });
   
