@@ -26,5 +26,21 @@ router.post("/", validateSessionTeacher, (req, res) => {
            .then((userinfo) => res.status(200).json(userinfo))
            .catch((err) => res.status(500).json({ error: err }));
        });
+
+       router.get("/studentview", validateSession, function (req, res) {
+        console.log(req.user.id)
+         return  Events.findAll(
+          )
+           .then((userinfo) => res.status(200).json(userinfo))
+           .catch((err) => res.status(500).json({ error: err }));
+       });
+
+  
+router.delete("/:id", validateSessionTeacher, function (req, res) {
+  const query = { where: { id: req.params.id } };
+  Events.destroy(query)
+    .then(() => res.status(200).json({ message: "entry is removed" }))
+    .catch((err) => res.status(500).json({ error: err }));
+});
      
     module.exports= router
