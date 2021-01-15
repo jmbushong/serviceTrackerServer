@@ -2,6 +2,7 @@ const router= require("express").Router();
 const validateSession = require("../middleware/validate-session");
 const validateSessionTeacher= require("../Middleware/validate-session-teacher")
 const Events = require("../Db").import("../Models/events");
+const Teacher= require('../Db').import('../Models/teacherUser');
 
 //create events
 router.post("/", validateSessionTeacher, (req, res) => {
@@ -11,6 +12,7 @@ router.post("/", validateSessionTeacher, (req, res) => {
       description: req.body.events.description,
       hours: req.body.events.hours,
       location:req.body.events.location,
+      classId: req.user.classId
     
     };
     Events.create(events)
@@ -21,7 +23,7 @@ router.post("/", validateSessionTeacher, (req, res) => {
     //   GET ---find all events --later I need to change this so it only grabs events linked to a specific class code
       router.get("/", validateSessionTeacher, function (req, res) {
         console.log(req.user.id)
-         return  Events.findAll(
+         return  Events.findAll({where: {classId: req.user.classId}, include: [{model: Teacher}]}
           )
            .then((userinfo) => res.status(200).json(userinfo))
            .catch((err) => res.status(500).json({ error: err }));
@@ -29,7 +31,7 @@ router.post("/", validateSessionTeacher, (req, res) => {
 
        router.get("/studentview", validateSession, function (req, res) {
         console.log(req.user.id)
-         return  Events.findAll(
+         return  Events.findAll({where: {classId: req.user.classId}, include: [{model: Teacher}]}
           )
            .then((userinfo) => res.status(200).json(userinfo))
            .catch((err) => res.status(500).json({ error: err }));
