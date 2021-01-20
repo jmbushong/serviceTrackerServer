@@ -71,6 +71,7 @@ router.get("/all", validateSessionTeacher, function (req, res) {
     .catch((err) => res.status(500).json({ error: err }));
 });
 
+
 //GET '/:id' --- Gets all users (eventually add validateSession when connected to teacher)
 router.get("/:id", validateSessionTeacher, function (req, res) {
     return User.findOne({
@@ -88,8 +89,11 @@ router.put("/:id", validateSessionTeacher, function (req, res) {
     firstName: req.body.studentUser.firstName,
     lastName: req.body.studentUser.lastName,
     email: req.body.studentUser.email,
-    password: bcrypt.hashSync(req.body.studentUser.password, 12),
+    // password: bcrypt.hashSync(req.body.studentUser.password, 12),
   };
+
+if(req.body.studentUser.password){  updateUserInfo.password= bcrypt.hashSync(req.body.studentUser.password, 12)}
+
   const query = {
     where: { id: req.params.id, classId: req.user.classId },
     include: [{ model: User }],

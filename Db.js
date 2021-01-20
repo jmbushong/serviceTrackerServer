@@ -24,6 +24,7 @@ ServiceEntry.belongsTo(Student)
 
 
 
+
 database.authenticate()
     .then(()=> console.log('postgres db is connected'))
     .catch(err=> console.log(err));
