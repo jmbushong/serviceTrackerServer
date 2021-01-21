@@ -32,10 +32,30 @@ router.get("/", validateSession, function (req, res) {
     .catch((err) => res.status(500).json({ error: err }));
 });
 
-//GET '/' --- Pulls up all service entries (eventually i need to add validateSession back in because this is a security issue. People could view info from postman)
-router.get("/all", validateSessionTeacher, function (req, res) {
+//GET '/' --- Pulls up all service entries with status of approved
+router.get("/approved", validateSessionTeacher, function (req, res) {
   return Service.findAll({
-    // where: {studentUser:{classId: req.user.classId} },
+    where: {status: "approved" },
+    include: [{ model: User }],
+  })
+    .then((entry) => res.status(200).json(entry))
+    .catch((err) => res.status(500).json({ error: err }));
+});
+
+//GET '/' --- Pulls up all service entries with status of denied
+router.get("/denied", validateSessionTeacher, function (req, res) {
+  return Service.findAll({
+    where: {status: "denied" },
+    include: [{ model: User }],
+  })
+    .then((entry) => res.status(200).json(entry))
+    .catch((err) => res.status(500).json({ error: err }));
+});
+
+//GET '/' --- Pulls up all service entries with status of denied
+router.get("/awaiting", validateSessionTeacher, function (req, res) {
+  return Service.findAll({
+    where: {status: "awaiting approval" },
     include: [{ model: User }],
   })
     .then((entry) => res.status(200).json(entry))
@@ -83,6 +103,25 @@ router.put("/:id", validateSession, function (req, res) {
     .then((entry) => res.status(200).json(entry))
     .catch((err) => res.status(500).json({ error: err }));
 });
+
+router.put("/status/:id", validateSessionTeacher , function (req, res) {
+  const updateServiceEntries = {
+    // date: req.body.service.date,
+    // typeOfService: req.body.service.typeOfService,
+    // description: req.body.service.description,
+    // hours: req.body.service.hours,
+    status: req.body.service.status,
+    // studentUserId: req.user.id,
+  };
+  const query = { where: { id: req.params.id} };
+
+  //req.body.service -- instead of saying I have to have all of the above-- I just want anything that happens to be in that object will be sent
+  // req.body.service
+  Service.update(req.body.service, query)
+    .then((entry) => res.status(200).json(entry))
+    .catch((err) => res.status(500).json({ error: err }));
+});
+
 
 router.delete("/:id", validateSession, function (req, res) {
   const query = { where: { id: req.params.id, studentUserId: req.user.id } };
