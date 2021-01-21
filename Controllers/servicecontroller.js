@@ -55,7 +55,7 @@ router.get("/denied", validateSessionTeacher, function (req, res) {
 //GET '/' --- Pulls up all service entries with status of denied
 router.get("/awaiting", validateSessionTeacher, function (req, res) {
   return Service.findAll({
-    where: {status: "awaiting approval" },
+    where: {status: "Awaiting Approval" },
     include: [{ model: User }],
   })
     .then((entry) => res.status(200).json(entry))
