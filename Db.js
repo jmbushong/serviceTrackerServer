@@ -1,9 +1,12 @@
 const Sequelize= require('sequelize');
 
-const database= new Sequelize(process.env.NAME, 'postgres', process.env.PASS,{host:
-'localhost',
-dialect: 'postgres'
-})
+// const database= new Sequelize(process.env.NAME, 'postgres', process.env.PASS,{host:
+// 'localhost',
+// dialect: 'postgres'
+// })
+
+const database = new Sequelize (process.env.DATABASE_URL, {
+    dialect:'postgres'});
 
 const ServiceEntry = database.import('./Models/service')
 const Teacher = database.import('./Models/teacherUser')
