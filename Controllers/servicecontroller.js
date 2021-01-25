@@ -1,4 +1,4 @@
-const validateSession = require("../middleware/validate-session");
+const validateSession = require("../Middleware/validate-session");
 const router = require("express").Router();
 const Service = require("../Db").import("../Models/service");
 const User = require("../Db").import("../Models/studentUser");

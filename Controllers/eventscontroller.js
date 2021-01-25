@@ -1,5 +1,5 @@
 const router= require("express").Router();
-const validateSession = require("../middleware/validate-session");
+const validateSession = require("../Middleware/validate-session");
 const validateSessionTeacher= require("../Middleware/validate-session-teacher")
 const Events = require("../Db").import("../Models/events");
 const Teacher= require('../Db').import('../Models/teacherUser');
