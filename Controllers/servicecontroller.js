@@ -33,9 +33,9 @@ router.get("/", validateSession, function (req, res) {
 });
 
 //GET '/' --- Pulls up all service entries with status of approved
-router.get("/approved", validateSessionTeacher, function (req, res) {
+router.get("/Approved", validateSessionTeacher, function (req, res) {
   return Service.findAll({
-    where: {status: "approved" },
+    where: {status: "Approved" },
     include: [{ model: User }],
   })
     .then((entry) => res.status(200).json(entry))
@@ -43,9 +43,9 @@ router.get("/approved", validateSessionTeacher, function (req, res) {
 });
 
 //GET '/' --- Pulls up all service entries with status of denied
-router.get("/denied", validateSessionTeacher, function (req, res) {
+router.get("/Denied", validateSessionTeacher, function (req, res) {
   return Service.findAll({
-    where: {status: "denied" },
+    where: {status: "Denied" },
     include: [{ model: User }],
   })
     .then((entry) => res.status(200).json(entry))
@@ -53,9 +53,9 @@ router.get("/denied", validateSessionTeacher, function (req, res) {
 });
 
 //GET '/' --- Pulls up all service entries with status of denied
-router.get("/awaiting", validateSessionTeacher, function (req, res) {
+router.get("/Pending", validateSessionTeacher, function (req, res) {
   return Service.findAll({
-    where: {status: "Awaiting Approval" },
+    where: {status: "Pending" },
     include: [{ model: User }],
   })
     .then((entry) => res.status(200).json(entry))
