@@ -13,6 +13,7 @@ router.post("/", validateSession, (req, res) => {
     hours: req.body.service.hours,
     status: req.body.service.status,
     studentUserId: req.user.id,
+    classId: req.user.classId
   };
   Service.create(serviceEntries)
     .then((entry) => res.status(200).json(entry))
@@ -35,7 +36,7 @@ router.get("/", validateSession, function (req, res) {
 //GET '/' --- Pulls up all service entries with status of approved
 router.get("/Approved", validateSessionTeacher, function (req, res) {
   return Service.findAll({
-    where: {status: "Approved" },
+    where: {status: "Approved", classId: req.user.classId  },
     include: [{ model: User }],
   })
     .then((entry) => res.status(200).json(entry))
@@ -45,7 +46,7 @@ router.get("/Approved", validateSessionTeacher, function (req, res) {
 //GET '/' --- Pulls up all service entries with status of denied
 router.get("/Denied", validateSessionTeacher, function (req, res) {
   return Service.findAll({
-    where: {status: "Denied" },
+    where: {status: "Denied", classId: req.user.classId  },
     include: [{ model: User }],
   })
     .then((entry) => res.status(200).json(entry))
@@ -55,8 +56,8 @@ router.get("/Denied", validateSessionTeacher, function (req, res) {
 //GET '/' --- Pulls up all service entries with status of denied
 router.get("/Pending", validateSessionTeacher, function (req, res) {
   return Service.findAll({
-    where: {status: "Pending" },
-    include: [{ model: User }],
+    where: {status: "Pending", classId: req.user.classId },
+    include: [{ model: User} ],
   })
     .then((entry) => res.status(200).json(entry))
     .catch((err) => res.status(500).json({ error: err }));

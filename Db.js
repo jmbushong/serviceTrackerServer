@@ -22,6 +22,11 @@ Teacher.hasMany(Events, {foreignKey: "classId"})
 Events.belongsTo(Teacher, {foreignKey: "classId"})
 
 //One to Many
+Teacher.hasMany(ServiceEntry, {foreignKey: "classId"})
+ServiceEntry.belongsTo(Teacher, {foreignKey: "classId"})
+
+
+//One to Many
 Student.hasMany(ServiceEntry)
 ServiceEntry.belongsTo(Student)
 
