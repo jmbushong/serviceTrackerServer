@@ -124,6 +124,9 @@ router.put("/status/:id", validateSessionTeacher , function (req, res) {
 });
 
 
+
+
+
 router.delete("/:id", validateSession, function (req, res) {
   const query = { where: { id: req.params.id, studentUserId: req.user.id } };
   Service.destroy(query)

@@ -16,6 +16,9 @@ module.exports=(sequelize, DataTypes) =>{
             unique:true,
             allowNull:false
         },
+        totalHours:{
+            type:DataTypes.INTEGER,
+        }, 
         password:{
             type:DataTypes.STRING,
             allowNull:false,

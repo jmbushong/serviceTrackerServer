@@ -71,6 +71,19 @@ router.get("/all", validateSessionTeacher, function (req, res) {
     .catch((err) => res.status(500).json({ error: err }));
 });
 
+//GET '/' --- Gets all users (eventually add validateSession when connected to teacher)
+router.get("/allbyhours", validateSessionTeacher, function (req, res) {
+  return User.findAll({
+    where: { classId: req.user.classId },
+    include: [{ model: teacherUser }, { model: Service }],
+    order: [["totalHours", "Desc"]]
+  })
+    .then((userinfo) => res.status(200).json(userinfo))
+    .catch((err) => res.status(500).json({ error: err }));
+});
+
+
+
 
 //GET '/:id' --- Gets all users (eventually add validateSession when connected to teacher)
 router.get("/:id", validateSessionTeacher, function (req, res) {
@@ -103,6 +116,22 @@ if(req.body.studentUser.password){  updateUserInfo.password= bcrypt.hashSync(req
     .then((userinfo) => res.status(200).json(userinfo))
     .catch((err) => res.status(500).json({ error: err }));
 });
+
+
+
+router.put("/totalHours/:id", validateSessionTeacher , function (req, res) {
+  const updateUserInfo = {
+   totalHours: req.body.studentUser.totalHours,
+  };
+  const query = { where: { id: req.params.id} };
+    //req.body.service -- instead of saying I have to have all of the above-- I just want anything that happens to be in that object will be sent
+  // req.body.service
+  User.update(req.body.studentUser, query)
+    .then((entry) => res.status(200).json(entry))
+    .catch((err) => res.status(500).json({ error: err }));
+});
+
+
 
 router.delete("/delete", validateSession, function (req, res) {
   const query = { where: { id: req.user.id } };
