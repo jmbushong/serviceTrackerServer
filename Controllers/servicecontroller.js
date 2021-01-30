@@ -113,7 +113,7 @@ router.get("/:id", validateSession, function (req, res) {
 
 
 
-router.put("/:id", validateSessionTeacher, function (req, res) {
+router.put("/:id", validateSession, function (req, res) {
   const updateServiceEntries = {
     date: req.body.service.date,
     typeOfService: req.body.service.typeOfService,
