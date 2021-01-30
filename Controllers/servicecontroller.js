@@ -33,6 +33,17 @@ router.get("/", validateSession, function (req, res) {
     .catch((err) => res.status(500).json({ error: err }));
 });
 
+//GET '/' --- Pulls up all service entries for individual user (can we make it so the user only creates one?)
+router.get("/user/:id", validateSessionTeacher, function (req, res) {
+  Service.findAll({
+    where: {  id: req.params.id, studentUserId: req.user.id },
+    include: [{ model: User }],
+    order: [["date", "ASC"]],
+  })
+    .then((profile) => res.status(200).json(profile))
+    .catch((err) => res.status(500).json({ error: err }));
+});
+
 //GET '/' --- Pulls up all service entries with status of approved
 router.get("/Approved", validateSessionTeacher, function (req, res) {
   return Service.findAll({
@@ -87,7 +98,22 @@ router.get("/:id", validateSession, function (req, res) {
     .catch((err) => res.status(500).json({ error: err }));
 });
 
-router.put("/:id", validateSession, function (req, res) {
+
+//GET '/id' --- Pulls up  service entries by id for individual user (can we make it so the user only creates one?)
+// router.get("/individual/:id", validateSessionTeacher, function (req, res) {
+//   Service.findOne({
+//     where: { id: req.params.id  },
+//     include: [{ model: User }],
+    
+//   })
+//     .then((profile) => res.status(200).json(profile))
+//     .catch((err) => res.status(500).json({ error: err }));
+// });
+
+
+
+
+router.put("/:id", validateSessionTeacher, function (req, res) {
   const updateServiceEntries = {
     date: req.body.service.date,
     typeOfService: req.body.service.typeOfService,
